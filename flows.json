@@ -1,0 +1,401 @@
+[
+    {
+        "id": "3c44f7747be18683",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b9394c1e417f8b5a",
+        "type": "debug",
+        "z": "3c44f7747be18683",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6b242e4061221071",
+        "type": "mqtt sparkplug device",
+        "z": "3c44f7747be18683",
+        "name": " Maszyna_Student8",
+        "metrics": {
+            "Maszyna_Student8": {
+                "dataType": "Int16"
+            }
+        },
+        "broker": "0ab61302e9bffa16",
+        "birthImmediately": false,
+        "bufferDevice": false,
+        "x": 710,
+        "y": 260,
+        "wires": [
+            [
+                "b9394c1e417f8b5a"
+            ]
+        ]
+    },
+    {
+        "id": "ee78941f1c9439fa",
+        "type": "serial in",
+        "z": "3c44f7747be18683",
+        "name": "",
+        "serial": "8a453e6e6aadba24",
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "af287074497309fa"
+            ]
+        ]
+    },
+    {
+        "id": "6029f38a1644ae6c",
+        "type": "function",
+        "z": "3c44f7747be18683",
+        "name": "format",
+        "func": "msg.payload = {\n   ...msg.payload,\n \"timestamp\": 0,\n \"metrics\": [\n    {\n         \"timestamp\": 0,\n         \"name\": 0,\n         \"dataType\": \"Integer\",\n         \"value\": 0,\n    }\n ]\n}\n\nmsg.payload.metrics[0]['name'] = \"Maszyna_Student8\";\nmsg.payload.metrics[0]['timestamp'] = Date.now();\nmsg.payload.metrics[0]['value'] = Math.floor(msg.payload.temperature * 100);\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 160,
+        "wires": [
+            [
+                "6b242e4061221071",
+                "2adbb31e5c66db4c"
+            ]
+        ]
+    },
+    {
+        "id": "a393ec3261c4e31b",
+        "type": "debug",
+        "z": "3c44f7747be18683",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "d5692670c78c7c80",
+        "type": "serial out",
+        "z": "3c44f7747be18683",
+        "name": "",
+        "serial": "8a453e6e6aadba24",
+        "x": 330,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "fbc57cf31959db12",
+        "type": "inject",
+        "z": "3c44f7747be18683",
+        "name": "m",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "m",
+        "payloadType": "str",
+        "x": 110,
+        "y": 300,
+        "wires": [
+            [
+                "d5692670c78c7c80"
+            ]
+        ]
+    },
+    {
+        "id": "af287074497309fa",
+        "type": "function",
+        "z": "3c44f7747be18683",
+        "name": "getTemp",
+        "func": "\nconst temperatureMatch = msg.payload.match(/(\\d+(\\.\\d+)?)\\sdegC/);\nconst payload = { temperature: temperatureMatch[1]-0 *1000 }\nreturn {payload};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 80,
+        "wires": [
+            [
+                "a393ec3261c4e31b",
+                "6029f38a1644ae6c",
+                "103e4a034c1feb98"
+            ]
+        ]
+    },
+    {
+        "id": "fa39cac682af0fe4",
+        "type": "serial out",
+        "z": "3c44f7747be18683",
+        "name": "",
+        "serial": "8a453e6e6aadba24",
+        "x": 330,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "0b43ceb310d757fa",
+        "type": "inject",
+        "z": "3c44f7747be18683",
+        "name": "f",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "f",
+        "payloadType": "str",
+        "x": 110,
+        "y": 380,
+        "wires": [
+            [
+                "fa39cac682af0fe4"
+            ]
+        ]
+    },
+    {
+        "id": "dcf1a86bfbd1dee2",
+        "type": "serial out",
+        "z": "3c44f7747be18683",
+        "name": "",
+        "serial": "8a453e6e6aadba24",
+        "x": 330,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "2349926477c45614",
+        "type": "inject",
+        "z": "3c44f7747be18683",
+        "name": "s",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "s",
+        "payloadType": "str",
+        "x": 110,
+        "y": 460,
+        "wires": [
+            [
+                "dcf1a86bfbd1dee2"
+            ]
+        ]
+    },
+    {
+        "id": "3618855cdb1bc0bd",
+        "type": "serial out",
+        "z": "3c44f7747be18683",
+        "name": "",
+        "serial": "8a453e6e6aadba24",
+        "x": 330,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "c35a09caf194ef16",
+        "type": "inject",
+        "z": "3c44f7747be18683",
+        "name": "b",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "b",
+        "payloadType": "str",
+        "x": 110,
+        "y": 540,
+        "wires": [
+            [
+                "3618855cdb1bc0bd"
+            ]
+        ]
+    },
+    {
+        "id": "2adbb31e5c66db4c",
+        "type": "debug",
+        "z": "3c44f7747be18683",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "103e4a034c1feb98",
+        "type": "function",
+        "z": "3c44f7747be18683",
+        "name": "function 4",
+        "func": "return { payload: msg.payload.temperature };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 340,
+        "wires": [
+            [
+                "39ddd3b7a3f21e1a"
+            ]
+        ]
+    },
+    {
+        "id": "39ddd3b7a3f21e1a",
+        "type": "ui_chart",
+        "z": "3c44f7747be18683",
+        "name": "",
+        "group": "9e01086b7a0d5319",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#a61717",
+            "#bc8b8a",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 810,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0ab61302e9bffa16",
+        "type": "mqtt-sparkplug-broker",
+        "name": "mqtt-spark-plug-broker",
+        "deviceGroup": "",
+        "eonName": "",
+        "broker": "149.156.138.167",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true,
+        "enableStoreForward": false,
+        "compressAlgorithm": "",
+        "aliasMetrics": false,
+        "useTemplates": true,
+        "manualEoNBirth": false,
+        "primaryScada": ""
+    },
+    {
+        "id": "8a453e6e6aadba24",
+        "type": "serial-port",
+        "name": "UART",
+        "serialport": "COM8",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "9e01086b7a0d5319",
+        "type": "ui_group",
+        "name": "Function",
+        "tab": "5831bb15c5efb448",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "5831bb15c5efb448",
+        "type": "ui_tab",
+        "name": "Button",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
